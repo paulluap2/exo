@@ -99,7 +99,7 @@ private:
 		  y = yold + (alpha*fyold+(1-alpha)*f)*dt;
 		  compute_f(f);
 		  delta_y_EE = abs(y -yold - (alpha*fyold+(1-alpha)*f)*dt);
-		  error = inner_product(begin(delta_y_EE),end(delta_y_EE),begin(delta_y_EE),0);
+		  error = sqrt(inner_product(begin(delta_y_EE),end(delta_y_EE),begin(delta_y_EE),0));
 		  ++iteration;
 		}while((error >= tol)and(iteration <= maxit));
       }
