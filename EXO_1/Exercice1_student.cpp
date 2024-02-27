@@ -53,7 +53,7 @@ private:
   void printOut(bool write)
   {
   // TODO calculer l'energie mecanique
-    double Energy = (1/2)*mass*(y[2]*y[2]+y[3]*y[3])+(1/5)*mass*R*R*omega+mass*g*y[1];
+    double Energy = (1.0/2.0)*mass*(y[2]*y[2]+y[3]*y[3])+(1.0/5.0)*mass*R*R*omega*omega+mass*g*y[1];
 
     // Ecriture tous les [sampling] pas de temps, sauf si write est vrai
     if((!write && last>=sampling) || (write && last!=1))
@@ -150,7 +150,7 @@ public:
     void run()
     {
       // TODO à ajuster selon vos besoins
-      S  = 0.0;
+      S  = pi*R*R;
       Om = 0.0; 
       t  = 0.e0; // initialiser le temps
       y  = y0;   // initialiser
