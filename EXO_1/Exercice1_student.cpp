@@ -1,4 +1,4 @@
-  #include <iostream>       // basic input output streams
+#include <iostream>       // basic input output streams
 #include <fstream>        // input output file stream class
 #include <cmath>          // librerie mathematique de base
 #include <iomanip>        // input output manipulators
@@ -53,7 +53,7 @@ private:
   void printOut(bool write)
   {
   // TODO calculer l'energie mecanique
-    double Energy =  0.0;
+    double Energy = (1/2)*mass*(y[2]*y[2]+y[3]*y[3])+(1/5)*mass*R*R*omega+mass*g*y[1];
 
     // Ecriture tous les [sampling] pas de temps, sauf si write est vrai
     if((!write && last>=sampling) || (write && last!=1))
@@ -73,10 +73,10 @@ private:
     {
       double Frict = 0.0;
       
-      f[0]      = 0.0;
-      f[1]      = 0.0;
-      f[2]      = 0.0;
-      f[3]      = 0.0;
+      f[0]      = y[2];
+      f[1]      = y[3];
+      f[2]      = -Ct*R*R*R*rho*omega*y[3]/mass;
+      f[3]      = (Ct*R*R*R*rho*omega*y[2]/mass)-g;
     }
 
     // New step method from EngineEuler
@@ -86,12 +86,22 @@ private:
       double error=999e0;
       valarray<double> f =valarray<double>(0.e0,4); 
       valarray<double> yold=valarray<double>(y);
-      valarray<double> y_control=valarray<double>(y);
+      valarray<double> y_control=valarray<double>(y);  //variable pas utilisée ?!
       valarray<double> delta_y_EE=valarray<double>(y);
+      valarray<double> fyold =valarray<double>(0.e0,4);
+      compute_f(fyold);
 
       if(alpha >= 0. && alpha <= 1.0){
       // TODO écrire l'algorithme qui peut être explicite, implicite ou semi-implicite d'Euler en variant alpha 
-      y = 0.0;
+      y = yold;
+      compute_f(f);
+      do{
+		  y = yold + (alpha*fyold+(1-alpha)*f)*dt;
+		  compute_f(f);
+		  delta_y_EE = abs(y -yold - (alpha*fyold+(1-alpha)*f)*dt);
+		  error = inner_product(begin(delta_y_EE),end(delta_y_EE),begin(delta_y_EE),0);
+		  ++iteration;
+		}while((error >= tol)and(iteration <= maxit));
       }
       else
       {
@@ -183,3 +193,5 @@ int main(int argc, char* argv[])
 }
 
 
+
+    
