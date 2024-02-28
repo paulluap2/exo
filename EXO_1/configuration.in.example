@@ -1,4 +1,4 @@
-tfin = 60
+tfin = 600
 nsteps = 600
 x0 = 0.0
 y0 = 0.0

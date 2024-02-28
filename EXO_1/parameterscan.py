@@ -9,7 +9,7 @@ executable = 'Exercice1_student.exe'  # Name of the executable (NB: .exe extensi
 input_filename = 'configuration.in.example'  # Name of the input file
 
 
-nsteps = np.array([400, 800]) # TODO change
+nsteps = np.array([400, 1000, 4000, 10000, 60000]) # TODO change
 nsimul = len(nsteps)  # Number of simulations to perform
 
 tfin = 600  # TODO: Verify that the value of tfin is EXACTLY the same as in the input file
@@ -20,7 +20,7 @@ dt = tfin / nsteps
 # TODO insert the values
 m = 00.056  
 v = 5.0
-omega = 10  
+omega = 10
 # add the other variables
 # TODO: Insert here the expressions for the exact final solution
 x_th  = 20257.7118 
@@ -59,7 +59,7 @@ for i in range(nsimul):  # Iterate through the results of all simulations
     En = data[-1, 5]
     vy_list.append(vy)
     # TODO compute the error for each simulation
-    error[i] =  100 
+    error[i] = np.sqrt((xx-x_th)**2+(yy-y_th)**2) #pas sûr de ce qu'il faut faire ici
 
 lw = 1.5 # line width. TODO: adjust if needed
 fs = 16  # font size. TODO: adjust if needed
