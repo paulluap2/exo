@@ -4,8 +4,8 @@ import matplotlib.pyplot as plt
 
 # Parameters
 # TODO adapt to what you need (folder path executable input filename)
-repertoire = './'  # Path to the compiled code (NB: ./ is not required on Windows)
-executable = 'exe'  # Name of the executable (NB: .exe extension is required on Windows)
+repertoire = ''  # Path to the compiled code (NB: ./ is not required on Windows)
+executable = 'Exercice1_student.exe'  # Name of the executable (NB: .exe extension is required on Windows)
 input_filename = 'configuration.in.example'  # Name of the input file
 
 
@@ -18,15 +18,15 @@ dt = tfin / nsteps
 
 # Analysis
 # TODO insert the values
-m = 0  
-v = 0
-omega = 0  
+m = 00.056  
+v = 5.0
+omega = 10  
 # add the other variables
 # TODO: Insert here the expressions for the exact final solution
-x_th  = 0 
-y_th  = 0
-vx_th = 0
-vy_th = 0
+x_th  = 20257.7118 
+y_th  = 28.803
+vx_th = 32.9416
+vy_th = -4.9273
 """
 ... and other parameters
 """

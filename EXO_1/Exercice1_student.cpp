@@ -75,8 +75,8 @@ private:
       
       f[0]      = y[2];
       f[1]      = y[3];
-      f[2]      = -mu*R*R*R*rho*2*pi*omega*y[3]/mass;
-      f[3]      = (mu*R*R*R*rho*2*pi*omega*y[2]/mass)-g;
+      f[2]      = -mu*R*R*R*rho*omega*y[3]/mass;
+      f[3]      = (mu*R*R*R*rho*omega*y[2]/mass)-g;
     }
 
     // New step method from EngineEuler
@@ -86,7 +86,6 @@ private:
       double error=999e0;
       valarray<double> f =valarray<double>(0.e0,4); 
       valarray<double> yold=valarray<double>(y);
-      valarray<double> y_control=valarray<double>(y);  //variable pas utilisée ?!
       valarray<double> delta_y_EE=valarray<double>(y);
       valarray<double> fyold =valarray<double>(0.e0,4);
       compute_f(fyold);
@@ -99,7 +98,7 @@ private:
 		  y = yold + (alpha*fyold+(1-alpha)*f)*dt;
 		  compute_f(f);
 		  delta_y_EE = abs(y -yold - (alpha*fyold+(1-alpha)*f)*dt);
-		  error = sqrt(inner_product(begin(delta_y_EE),end(delta_y_EE),begin(delta_y_EE),0));
+		  error = sqrt(inner_product(begin(delta_y_EE),end(delta_y_EE),begin(delta_y_EE),0.0));
 		  ++iteration;
 		}while((error >= tol)and(iteration <= maxit));
       }
@@ -110,6 +109,40 @@ private:
       t+=dt;
     }
 
+    void EulerExplicite(){
+      valarray<double> f =valarray<double>(0.e0,4);
+      compute_f(f);
+      y = y + f*dt;
+      t+=dt;
+    }
+    void EulerImplicite(){
+      unsigned int iteration=0;
+      double error=999e0;
+      valarray<double> f =valarray<double>(0.e0,4); 
+      valarray<double> yold=valarray<double>(y);
+      valarray<double> y_control=valarray<double>(y);
+      valarray<double> delta_y_EE=valarray<double>(y);
+
+      y = yold;
+      compute_f(f);
+      int k = 0;
+      do{
+        cout<<"avant: "<<y[0]<<", "<<y[1]<<", "<<y[2]<<", "<<y[3]<<endl;
+		  y = yold + f*dt;
+        cout<<"après: "<<y[0]<<", "<<y[1]<<", "<<y[2]<<", "<<y[3]<<endl;
+      compute_f(f);
+      y_control = yold + f*dt;
+       cout << "ycontrol: "<<y_control[0]<<", "<<y_control[1]<<", "<<y_control[2]<<", "<<y_control[3]<<endl;
+		  delta_y_EE = abs(y - y_control);
+      cout << "delta: "<<delta_y_EE[0]<<", "<<delta_y_EE[1]<<", "<<delta_y_EE[2]<<", "<<delta_y_EE[3]<<endl;
+		  error = sqrt(inner_product(begin(delta_y_EE),end(delta_y_EE),begin(delta_y_EE),0.0));
+      cout << "k = " << k << " et error = " << error << endl;
+		  ++iteration;
+      ++k;
+		}while((error >= tol)and(iteration <= maxit));
+    
+      t+=dt;
+    }
 public:
     // Modified constructor
     Engine(ConfigFile configFile)
@@ -123,7 +156,7 @@ public:
       y0[3]    = configFile.get<double>("vy0",y0[3]); // vitesse initiale selon y	    
       mass     = configFile.get<double>("mass",mass);           
       g        = configFile.get<double>("g",g);           
-      omega    = configFile.get<double>("omega",omega);       
+      omega    = 2*pi*configFile.get<double>("omega",omega);     //omega est en rad/s  
       mu       = configFile.get<double>("mu",mu);            
       R        = configFile.get<double>("R",R);            
       rho      = configFile.get<double>("rho",rho);        

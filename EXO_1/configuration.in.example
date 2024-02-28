@@ -1,5 +1,5 @@
-tfin = 600
-nsteps = 6000
+tfin = 60
+nsteps = 600
 x0 = 0.0
 y0 = 0.0
 vx0 = 5.0
@@ -15,4 +15,5 @@ sampling = 1
 tol = 1e-5
 maxit = 200
 alpha = 0.5
+output=mainoutput.out
 
