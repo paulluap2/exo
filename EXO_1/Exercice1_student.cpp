@@ -75,8 +75,8 @@ private:
       
       f[0]      = y[2];
       f[1]      = y[3];
-      f[2]      = -Ct*R*R*R*rho*omega*y[3]/mass;
-      f[3]      = (Ct*R*R*R*rho*omega*y[2]/mass)-g;
+      f[2]      = -mu*R*R*R*rho*omega*y[3]/mass;
+      f[3]      = (mu*R*R*R*rho*omega*y[2]/mass)-g;
     }
 
     // New step method from EngineEuler
@@ -107,7 +107,7 @@ private:
       {
         cerr << "alpha not valid" << endl;
       }
-  
+      t+=dt;
     }
 
 public:
