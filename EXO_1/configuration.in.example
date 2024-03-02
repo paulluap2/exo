@@ -1,11 +1,11 @@
-tfin = 600
+tfin = 60
 nsteps = 600
 x0 = 0.0
 y0 = 0.0
 vx0 = 5.0
 vy0 = 0.0
 mass = 0.056
-g   = 9.81
+g   = 0
 omega   = 10
 mu = 6
 R = 0.033

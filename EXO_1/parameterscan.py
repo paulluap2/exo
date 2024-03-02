@@ -9,24 +9,29 @@ executable = 'Exercice1_student.exe'  # Name of the executable (NB: .exe extensi
 input_filename = 'configuration.in.example'  # Name of the input file
 
 
-nsteps = np.array([400, 1000, 4000, 10000, 60000]) # TODO change
+nsteps = np.array([100,500,1000,5000,10000,50000,100000]) # TODO change
 nsimul = len(nsteps)  # Number of simulations to perform
 
-tfin = 600  # TODO: Verify that the value of tfin is EXACTLY the same as in the input file
+tfin = 60  # TODO: Verify that the value of tfin is EXACTLY the same as in the input file
 
 dt = tfin / nsteps
 
 # Analysis
 # TODO insert the values
-m = 00.056  
+m = 0.056  
 v = 5.0
 omega = 10
+mu = 6
+R = 0.033
+rho = 1.2
+
 # add the other variables
 # TODO: Insert here the expressions for the exact final solution
-x_th  = 20257.7118 
-y_th  = 28.803
-vx_th = 32.9416
-vy_th = -4.9273
+a = mu*(R**3)*rho*2*np.pi*omega/m
+x_th  = (v/a)*np.sin(a*tfin)
+y_th  = (-v/a)*np.cos(a*tfin)+(v/a)
+vx_th = v*np.cos(a*tfin)
+vy_th = v*np.sin(a*tfin)
 """
 ... and other parameters
 """
@@ -61,14 +66,17 @@ for i in range(nsimul):  # Iterate through the results of all simulations
     # TODO compute the error for each simulation
     error[i] = np.sqrt((xx-x_th)**2+(yy-y_th)**2) #pas sûr de ce qu'il faut faire ici
 
+
 lw = 1.5 # line width. TODO: adjust if needed
 fs = 16  # font size. TODO: adjust if needed
-
+   
 fig, ax = plt.subplots(constrained_layout=True)
 ax.plot(data[:, 1], data[:, 2])
 ax.set_xlabel('x [m]', fontsize=fs)
 ax.set_ylabel('y [m]', fontsize=fs)
-
+ax.scatter(x_th, y_th, color='red', label='Exact final position')
+ax.legend()
+plt.show()
 
 
 # uncomment the following 2 lines if you want debug
@@ -76,7 +84,7 @@ ax.set_ylabel('y [m]', fontsize=fs)
 #pbd.set_trace()
 plt.figure()
 plt.loglog(dt, error, 'r+-', linewidth=lw)
-plt.xlabel('\Delta t [s]', fontsize=fs)
+plt.xlabel('Delta t [s]', fontsize=fs)
 plt.ylabel('final position error [m]', fontsize=fs)
 plt.xticks(fontsize=fs)
 plt.yticks(fontsize=fs)
@@ -91,7 +99,7 @@ norder = 1  # TODO: Modify if needed
 
 plt.figure()
 plt.plot(dt**norder, vy_list, 'k+-', linewidth=lw)
-plt.xlabel('\Delta t [s]', fontsize=fs)
+plt.xlabel('Delta t [s]', fontsize=fs)
 plt.ylabel('v_y [m/s]', fontsize=fs)
 plt.xticks(fontsize=fs)
 plt.yticks(fontsize=fs)

@@ -109,6 +109,7 @@ private:
       t+=dt;
     }
 
+    //les deux fonctions suivantes on servi à tester la fontion step()
     void EulerExplicite(){
       valarray<double> f =valarray<double>(0.e0,4);
       compute_f(f);
@@ -127,16 +128,11 @@ private:
       compute_f(f);
       int k = 0;
       do{
-        cout<<"avant: "<<y[0]<<", "<<y[1]<<", "<<y[2]<<", "<<y[3]<<endl;
 		  y = yold + f*dt;
-        cout<<"après: "<<y[0]<<", "<<y[1]<<", "<<y[2]<<", "<<y[3]<<endl;
       compute_f(f);
       y_control = yold + f*dt;
-       cout << "ycontrol: "<<y_control[0]<<", "<<y_control[1]<<", "<<y_control[2]<<", "<<y_control[3]<<endl;
 		  delta_y_EE = abs(y - y_control);
-      cout << "delta: "<<delta_y_EE[0]<<", "<<delta_y_EE[1]<<", "<<delta_y_EE[2]<<", "<<delta_y_EE[3]<<endl;
 		  error = sqrt(inner_product(begin(delta_y_EE),end(delta_y_EE),begin(delta_y_EE),0.0));
-      cout << "k = " << k << " et error = " << error << endl;
 		  ++iteration;
       ++k;
 		}while((error >= tol)and(iteration <= maxit));
