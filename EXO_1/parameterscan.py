@@ -19,19 +19,23 @@ dt = tfin / nsteps
 # Analysis
 # TODO insert the values
 m = 0.056  
-v = 5.0
+
 omega = 10
 mu = 6
 R = 0.033
 rho = 1.2
+g = 9.81
 
 # add the other variables
 # TODO: Insert here the expressions for the exact final solution
 a = mu*(R**3)*rho*2*np.pi*omega/m
-x_th  = (v/a)*np.sin(a*tfin)
+v = -g/a
+x_th  = (v/a)*np.sin(a*tfin)+(g/a)*tfin
 y_th  = (-v/a)*np.cos(a*tfin)+(v/a)
-vx_th = v*np.cos(a*tfin)
+vx_th = v*np.cos(a*tfin)+(g/a)
 vy_th = v*np.sin(a*tfin)
+L_th = 2*np.pi*g/a**2
+
 """
 ... and other parameters
 """
@@ -75,6 +79,7 @@ ax.plot(data[:, 1], data[:, 2])
 ax.set_xlabel('x [m]', fontsize=fs)
 ax.set_ylabel('y [m]', fontsize=fs)
 ax.scatter(x_th, y_th, color='red', label='Exact final position')
+ax.scatter(L_th, 0.0, color='purple', label='L')
 ax.legend()
 plt.show()
 
