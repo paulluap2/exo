@@ -9,7 +9,7 @@ executable = 'Exercice1_student.exe'  # Name of the executable (NB: .exe extensi
 input_filename = 'configuration.in.example'  # Name of the input file
 
 
-nsteps = np.array([100,500,1000,5000,10000,50000,100000]) # TODO change
+nsteps = np.array([100,200,500,1000,2000,5000,10000,20000,50000,100000]) # TODO change
 nsimul = len(nsteps)  # Number of simulations to perform
 
 tfin = 60  # TODO: Verify that the value of tfin is EXACTLY the same as in the input file
@@ -24,16 +24,32 @@ omega = 10
 mu = 6
 R = 0.033
 rho = 1.2
+v = 0
 g = 9.81
+
 
 # add the other variables
 # TODO: Insert here the expressions for the exact final solution
+
 a = mu*(R**3)*rho*2*np.pi*omega/m
-v = -g/a
-x_th  = (v/a)*np.sin(a*tfin)+(g/a)*tfin
-y_th  = (-v/a)*np.cos(a*tfin)+(v/a)
-vx_th = v*np.cos(a*tfin)+(g/a)
+
+#Cas avec g==0
+
+"""
+x_th = (v/a)*np.sin(a*tfin)
+y_th = (v/a)*(1-np.cos(a*tfin))
+vx_th = v*np.cos(a*tfin)
 vy_th = v*np.sin(a*tfin)
+
+"""
+
+
+#Cas avec g!=0
+
+x_th  = (g/a)*(tfin-np.sin(a*tfin)/a)
+y_th  = (g/a**2)*(np.cos(a*tfin)-1)
+vx_th = (g/a)*(1-np.cos(a*tfin))
+vy_th = -(g/a)*np.sin(a*tfin)
 L_th = 2*np.pi*g/a**2
 
 """
@@ -56,6 +72,7 @@ for i in range(nsimul):
 
 
 error = np.zeros(nsimul)
+error_energy = np.zeros(nsimul)
 
 for i in range(nsimul):  # Iterate through the results of all simulations
     data = np.loadtxt(outputs[i])  # Load the output file of the i-th simulation
@@ -69,6 +86,7 @@ for i in range(nsimul):  # Iterate through the results of all simulations
     vy_list.append(vy)
     # TODO compute the error for each simulation
     error[i] = np.sqrt((xx-x_th)**2+(yy-y_th)**2) #pas sûr de ce qu'il faut faire ici
+    error_energy[i] = max(data[:,5])-min(data[:,5])
 
 
 lw = 1.5 # line width. TODO: adjust if needed
@@ -81,7 +99,6 @@ ax.set_ylabel('y [m]', fontsize=fs)
 ax.scatter(x_th, y_th, color='red', label='Exact final position')
 ax.scatter(L_th, 0.0, color='purple', label='L')
 ax.legend()
-plt.show()
 
 
 # uncomment the following 2 lines if you want debug
@@ -95,6 +112,14 @@ plt.xticks(fontsize=fs)
 plt.yticks(fontsize=fs)
 plt.grid(True)
 
+plt.figure()
+plt.loglog(dt, error_energy, 'r+-', linewidth=lw)
+plt.xlabel('Delta t [s]', fontsize=fs)
+plt.ylabel('Energy error [m]', fontsize=fs)
+plt.xticks(fontsize=fs)
+plt.yticks(fontsize=fs)
+plt.grid(True)
+
 """
 Si on n'a pas la solution analytique: on représente la quantite voulue
 (ci-dessous v_y, TODO: modifier selon vos besoins)
@@ -104,10 +129,12 @@ norder = 1  # TODO: Modify if needed
 
 plt.figure()
 plt.plot(dt**norder, vy_list, 'k+-', linewidth=lw)
+plt.axhline(vy_th, color='red', label='Theoretical vy')
 plt.xlabel('Delta t [s]', fontsize=fs)
 plt.ylabel('v_y [m/s]', fontsize=fs)
 plt.xticks(fontsize=fs)
 plt.yticks(fontsize=fs)
 plt.grid(True)
+plt.legend()
 
 plt.show()

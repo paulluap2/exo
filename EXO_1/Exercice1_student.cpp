@@ -109,7 +109,7 @@ private:
       t+=dt;
     }
 
-    //les deux fonctions suivantes on servi à tester la fontion step()
+    //les deux fonctions suivantes ont servi à tester la fontion step()
     void EulerExplicite(){
       valarray<double> f =valarray<double>(0.e0,4);
       compute_f(f);
