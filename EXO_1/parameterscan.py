@@ -12,7 +12,7 @@ input_filename = 'configuration.in.example'  # Name of the input file
 nsteps = np.array([100,200,500,1000,2000,5000,10000,20000,50000,100000]) # TODO change
 nsimul = len(nsteps)  # Number of simulations to perform
 
-tfin = 60  # TODO: Verify that the value of tfin is EXACTLY the same as in the input file
+tfin = 21.64281319 # TODO: Verify that the value of tfin is EXACTLY the same as in the input file
 
 dt = tfin / nsteps
 
@@ -25,7 +25,7 @@ mu = 6
 R = 0.033
 rho = 1.2
 v = 5
-g = 0.0
+g = 9.81
 
 
 # add the other variables
@@ -33,8 +33,9 @@ g = 0.0
 
 a = mu*(R**3)*rho*2*np.pi*omega/m
 
-#Cas avec g==0
 
+#Cas avec g==0
+"""
 
 x_th = (v/a)*np.sin(a*tfin)
 y_th = (v/a)*(1-np.cos(a*tfin))
@@ -51,7 +52,7 @@ y_th  = (g/a**2)*(np.cos(a*tfin)-1)
 vx_th = (g/a)*(1-np.cos(a*tfin))
 vy_th = -(g/a)*np.sin(a*tfin)
 L_th = 2*np.pi*g/a**2
-"""
+
 """
 ... and other parameters
 """
@@ -107,8 +108,8 @@ ax.plot(data[:, 1], data[:, 2])
 ax.set_xlabel('x [m]', fontsize=fs)
 ax.set_ylabel('y [m]', fontsize=fs)
 ax.scatter(x_th, y_th, color='red', label='Exact final position')
-ax.axis('equal')
-#ax.scatter(L_th, 0.0, color='purple', label='L')
+#ax.axis('equal')
+#ax.scatter(L_th, 0.0, color='purple', label='L theoretical')
 ax.legend()
 
 
@@ -126,7 +127,7 @@ plt.grid(True)
 plt.figure()
 plt.loglog(dt, error_energy, 'r+-', linewidth=lw)
 plt.xlabel('Delta t [s]', fontsize=fs)
-plt.ylabel('Energy error [m]', fontsize=fs)
+plt.ylabel('Energy error [J]', fontsize=fs)
 plt.xticks(fontsize=fs)
 plt.yticks(fontsize=fs)
 plt.grid(True)
