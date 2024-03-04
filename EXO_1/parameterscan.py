@@ -25,7 +25,7 @@ mu = 6
 R = 0.033
 rho = 1.2
 v = 5
-g = 9.81
+g = 0.0
 
 
 # add the other variables
