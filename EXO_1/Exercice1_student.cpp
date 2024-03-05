@@ -72,11 +72,11 @@ private:
     void compute_f(valarray<double>& f) const
     {
       double Frict = 0.0;
-      
+      double v=sqrt(y[2]*y[2]+y[3]*y[3]);
       f[0]      = y[2];
       f[1]      = y[3];
-      f[2]      = -mu*R*R*R*rho*omega*y[3]/mass;
-      f[3]      = (mu*R*R*R*rho*omega*y[2]/mass)-g;
+      f[2]      = -mu*R*R*R*rho*omega*y[3]/mass-Ct*rho*S/(2*mass)*v*y[2];
+      f[3]      = (mu*R*R*R*rho*omega*y[2]/mass)-g-Ct*rho*S/(2*mass)*v*y[3];
     }
 
     // New step method from EngineEuler

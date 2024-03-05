@@ -14,6 +14,7 @@ nsimul = len(nsteps)  # Number of simulations to perform
 
 tfin = 21.64281319 # TODO: Verify that the value of tfin is EXACTLY the same as in the input file
 
+
 dt = tfin / nsteps
 
 # Analysis
@@ -26,6 +27,7 @@ R = 0.033
 rho = 1.2
 v = 5
 g = 9.81
+Ct=0.01
 
 
 # add the other variables
