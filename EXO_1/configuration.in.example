@@ -1,5 +1,5 @@
 tfin = 21.64281319
-nsteps = 600.0
+nsteps = 10000
 x0 = 0.0
 y0 = 0.0
 vx0 = 0.0
@@ -10,7 +10,7 @@ omega   = 10.0
 mu = 6.0
 R = 0.033
 rho = 1.2
-Ct = 0.35
+Ct = 0.0
 sampling = 1
 tol = 1e-5
 maxit = 200.0

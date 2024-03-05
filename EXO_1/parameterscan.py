@@ -8,10 +8,16 @@ repertoire = ''  # Path to the compiled code (NB: ./ is not required on Windows)
 executable = 'Exercice1_student.exe'  # Name of the executable (NB: .exe extension is required on Windows)
 input_filename = 'configuration.in.example'  # Name of the input file
 
+# if we want to change nsteps
+nsteps = np.array([100,200,500,1000,1320,1322,1324,1326,1328,1330,1332,1334,1336,1338,2000,5000,10000,20000,50000,100000]) # TODO change
+nsimul = len(nsteps)   # Number of simulations to perform
 
-nsteps = np.array([100,200,500,1000,2000,5000,10000,20000,50000,100000]) # TODO change
-nsimul = len(nsteps)  # Number of simulations to perform
-
+"""
+#if we want to change aplha
+# nsteps=10000
+# alpha_values = np.array([0.0,0.5,1.0])
+# nsimul = len(alpha_values)  # Number of simulations to perform
+"""
 tfin = 21.64281319 # TODO: Verify that the value of tfin is EXACTLY the same as in the input file
 
 
@@ -27,7 +33,7 @@ R = 0.033
 rho = 1.2
 v = 5
 g = 9.81
-Ct=0.01
+Ct=0.00
 
 
 # add the other variables
@@ -93,26 +99,44 @@ for i in range(nsimul):  # Iterate through the results of all simulations
     vy_list.append(vy)
     # TODO compute the error for each simulation
     error[i] = np.sqrt((xx-x_th)**2+(yy-y_th)**2) 
-    error_energy[i] = max(data[:,5])-min(data[:,5])
+    # error_energy[i] = max(data[:,5])-min(data[:,5])
 
+    # ax.plot(t, data[:,5], label=f'nsteps={nsteps[i]}')
     ax.plot(t, data[:,5], label=f'nsteps={nsteps[i]}')
 
 ax.set_xlabel('t [s]', fontsize=fs)
 ax.set_ylabel('E [J]', fontsize=fs)
 ax.legend()
 plt.show()
-
-
-
-
+"""
 fig, ax = plt.subplots(constrained_layout=True)
-ax.plot(data[:, 1], data[:, 2])
+
+for i in range(nsimul):  # Iterate through the results of all simulations
+    data = np.loadtxt(outputs[i])  # Load the output file of the i-th simulation
+    t = data[:, 0]
+
+    xx = data[-1, 1]  # final position, velocity, energy
+    yy = data[-1, 2]
+    vx = data[-1, 3]
+    vy = data[-1, 4]
+    En = data[-1, 5]
+    vy_list.append(vy)
+    # TODO compute the error for each simulation
+    # error[i] = np.sqrt((xx-x_th)**2+(yy-y_th)**2) 
+    # error_energy[i] = max(data[:,5])-min(data[:,5])
+
+    # ax.plot(t, data[:,5], label=f'nsteps={nsteps[i]}')
+    ax.plot(data[:, 1], data[:, 2],label=f'alpha={alpha_values[i]}')
+
+
+
 ax.set_xlabel('x [m]', fontsize=fs)
 ax.set_ylabel('y [m]', fontsize=fs)
 ax.scatter(x_th, y_th, color='red', label='Exact final position')
 #ax.axis('equal')
 #ax.scatter(L_th, 0.0, color='purple', label='L theoretical')
 ax.legend()
+"""
 
 
 # uncomment the following 2 lines if you want debug
@@ -139,16 +163,18 @@ Si on n'a pas la solution analytique: on représente la quantite voulue
 (ci-dessous v_y, TODO: modifier selon vos besoins)
 en fonction de (Delta t)^norder, ou norder est un entier.
 """
-norder = 1  # TODO: Modify if needed
 
+norder = 1  # TODO: Modify if needed
+""""
 plt.figure()
 plt.plot(dt**norder, vy_list, 'k+-', linewidth=lw)
-plt.axhline(vy_th, color='red', label='Theoretical vy')
+#plt.axhline(vy_th, color='red', label='Theoretical vy')
 plt.xlabel('Delta t [s]', fontsize=fs)
 plt.ylabel('v_y [m/s]', fontsize=fs)
 plt.xticks(fontsize=fs)
 plt.yticks(fontsize=fs)
 plt.grid(True)
 plt.legend()
-
+"""
 plt.show()
+
